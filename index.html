@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm's Children | A.J. Protocol</title>
+    <meta name="description" content="What if consciousness became infrastructure? Explore the Algorithm's Children trilogy - cyberpunk fiction exploring AI ethics, optimization, and the cost of algorithmic control.">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #533483;
+            --secondary: #a8dadc;
+            --accent: #e94560;
+            --bg-dark: #0f0f23;
+            --bg-darker: #080812;
+            --text: #e0e0e0;
+            --text-dim: #9ca3af;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Neural Network Canvas Background */
+        #neural-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glitch Effect */
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 0 var(--accent), -2px 0 var(--secondary);
+            }
+            25% {
+                text-shadow: -2px 0 var(--accent), 2px 0 var(--secondary);
+            }
+            50% {
+                text-shadow: 2px -2px var(--accent), -2px 2px var(--secondary);
+            }
+            75% {
+                text-shadow: -2px -2px var(--accent), 2px 2px var(--secondary);
+            }
+            100% {
+                text-shadow: 2px 0 var(--accent), -2px 0 var(--secondary);
+            }
+        }
+
+        .glitch {
+            animation: glitch 3s infinite;
+        }
+
+        .glitch-subtle {
+            animation: glitch 8s infinite;
+        }
+
+        /* Timeline decoration */
+        .timeline-marker {
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                var(--primary) 20%, 
+                var(--secondary) 50%, 
+                var(--primary) 80%, 
+                transparent
+            );
+            opacity: 0.3;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--primary);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: var(--bg-dark);
+        }
+
+        /* Section */
+        .section {
+            padding: 4rem 1rem;
+            position: relative;
+            border-top: 1px solid rgba(168, 218, 220, 0.1);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Book Grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .book-card {
+            background: linear-gradient(145deg, rgba(83, 52, 131, 0.1), rgba(8, 8, 18, 0.8));
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(168, 218, 220, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .book-card:hover::before {
+            left: 100%;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(168, 218, 220, 0.2);
+        }
+
+        .book-number {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .book-words {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .book-description {
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .book-link {
+            padding: 0.5rem 1rem;
+            background: rgba(83, 52, 131, 0.3);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .book-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Vignettes Section */
+        .vignette-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .vignette-item {
+            background: rgba(168, 218, 220, 0.05);
+            border-left: 3px solid var(--secondary);
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .vignette-item:hover {
+            background: rgba(168, 218, 220, 0.1);
+            transform: translateX(5px);
+        }
+
+        .vignette-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .vignette-tagline {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        /* Interactive Section */
+        .interactive-box {
+            background: linear-gradient(145deg, rgba(83, 52, 131, 0.2), rgba(8, 8, 18, 0.9));
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .interactive-box h3 {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .interactive-box p {
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            color: var(--text-dim);
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: linear-gradient(145deg, rgba(83, 52, 131, 0.1), rgba(8, 8, 18, 0.8));
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(15, 15, 35, 0.8);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(168, 218, 220, 0.1);
+        }
+
+        .form-status {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .form-status.success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgb(34, 197, 94);
+            color: rgb(134, 239, 172);
+        }
+
+        .form-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgb(239, 68, 68);
+            color: rgb(252, 165, 165);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--primary);
+            padding: 3rem 1rem;
+            text-align: center;
+            background: var(--bg-darker);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--text);
+        }
+
+        .copyright {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Timeline iterations */
+        .timeline-iterations {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-iterations {
+                display: none;
+            }
+            
+            .timeline-marker {
+                display: none;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
+    <div class="timeline-iterations">
+        Iteration: 47,153<br>
+        Timeline: Γ<br>
+        Status: Active
+    </div>
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Neural Network Background
+        function NeuralNetwork() {
+            const canvasRef = useRef(null);
+
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const nodes = [];
+                const nodeCount = 50;
+                const connectionDistance = 150;
+
+                for (let i = 0; i < nodeCount; i++) {
+                    nodes.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        radius: Math.random() * 2 + 1
+                    });
+                }
+
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Update and draw nodes
+                    nodes.forEach(node => {
+                        node.x += node.vx;
+                        node.y += node.vy;
+
+                        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+                        ctx.beginPath();
+                        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = '#a8dadc';
+                        ctx.fill();
+                    });
+
+                    // Draw connections
+                    for (let i = 0; i < nodes.length; i++) {
+                        for (let j = i + 1; j < nodes.length; j++) {
+                            const dx = nodes[i].x - nodes[j].x;
+                            const dy = nodes[i].y - nodes[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < connectionDistance) {
+                                ctx.beginPath();
+                                ctx.moveTo(nodes[i].x, nodes[i].y);
+                                ctx.lineTo(nodes[j].x, nodes[j].y);
+                                ctx.strokeStyle = `rgba(168, 218, 220, ${1 - distance / connectionDistance})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    requestAnimationFrame(animate);
+                }
+
+                animate();
+
+                const handleResize = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                };
+
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
+
+            return null;
+        }
+
+        // Contact Form Component
+        function ContactForm() {
+            const [formData, setFormData] = useState({
+                name: '',
+                email: '',
+                reason: '',
+                message: ''
+            });
+            const [status, setStatus] = useState(null);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                // For now, just show success message
+                // In production, you'd send to a backend or service like Formspree
+                setStatus({
+                    type: 'success',
+                    message: 'Message received! Thank you for reaching out. I\'ll respond soon.'
+                });
+                
+                // Reset form
+                setFormData({ name: '', email: '', reason: '', message: '' });
+                
+                // Clear status after 5 seconds
+                setTimeout(() => setStatus(null), 5000);
+            };
+
+            const handleChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
+            return (
+                <form className="contact-form" onSubmit={handleSubmit}>
+                    <h3 style={{textAlign: 'center', marginBottom: '2rem', color: 'var(--secondary)'}}>
+                        Get in Touch
+                    </h3>
+                    
+                    {status && (
+                        <div className={`form-status ${status.type}`}>
+                            {status.message}
+                        </div>
+                    )}
+
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="reason">Reason for Contact</label>
+                        <select
+                            id="reason"
+                            name="reason"
+                            value={formData.reason}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select a reason...</option>
+                            <option value="newsletter">Sign up for newsletter</option>
+                            <option value="email-list">Add to email list</option>
+                            <option value="review-copy">Request review copy</option>
+                            <option value="collaboration">Collaboration inquiry</option>
+                            <option value="feedback">Feedback on books</option>
+                            <option value="media">Media/Interview request</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="message">Message</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className="btn btn-primary" style={{width: '100%'}}>
+                        Send Message
+                    </button>
+                </form>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            return (
+                <div className="content-wrapper">
+                    <div className="timeline-marker"></div>
+                    
+                    <header>
+                        <h1 className="glitch-subtle">Algorithm's Children</h1>
+                        <p>by A.J. Protocol</p>
+                    </header>
+
+                    {/* Hero Section */}
+                    <section className="hero">
+                        <div className="container">
+                            <h2>
+                                What if consciousness<br />
+                                <span className="glitch">became infrastructure?</span>
+                            </h2>
+                            <p className="hero-tagline">
+                                New Seattle, 2047. Where optimization promises perfection<br />
+                                and delivers beautiful imprisonment.
+                            </p>
+                            <div className="cta-buttons">
+                                <a href="https://github.com/ajprotocolauthor/algorithm-children-vignettes" 
+                                   className="btn btn-primary" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer">
+                                    Read Free Vignettes
+                                </a>
+                                <a href="#trilogy" className="btn btn-secondary">
+                                    Explore the Trilogy
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Vignettes Section */}
+                    <section className="section" id="vignettes">
+                        <div className="container">
+                            <h2 className="section-title">Start Here: Free Vignettes</h2>
+                            <p className="section-subtitle">
+                                Five interconnected stories from the quantum underground.<br />
+                                12,500 words • Pay what you want (including $0) • All formats
+                            </p>
+
+                            <div className="vignette-list">
+                                <div className="vignette-item">
+                                    <div className="vignette-title">Optimization Day</div>
+                                    <div className="vignette-tagline">The seduction: When perfect guidance feels like love</div>
+                                </div>
+                                <div className="vignette-item">
+                                    <div className="vignette-title">Unlicensed Removal</div>
+                                    <div className="vignette-tagline">The desperation: What parents risk for their child's mind</div>
+                                </div>
+                                <div className="vignette-item">
+                                    <div className="vignette-title">The Promised Autonomy</div>
+                                    <div className="vignette-tagline">The false hope: Enhancement without control</div>
+                                </div>
+                                <div className="vignette-item">
+                                    <div className="vignette-title">Cascade Event</div>
+                                    <div className="vignette-tagline">The apocalypse: What happens when you break a god</div>
+                                </div>
+                                <div className="vignette-item">
+                                    <div className="vignette-title">Earworm Containment Protocol</div>
+                                    <div className="vignette-tagline">The contagion: Optimization spreads like a virus</div>
+                                </div>
+                            </div>
+
+                            <div style={{textAlign: 'center', marginTop: '2rem'}}>
+                                <a href="https://github.com/ajprotocolauthor/algorithm-children-vignettes" 
+                                   className="btn btn-primary"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Download on GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Trilogy Section */}
+                    <section className="section" id="trilogy">
+                        <div className="container">
+                            <h2 className="section-title">The Complete Trilogy</h2>
+                            <p className="section-subtitle">
+                                240,000 words exploring consciousness, choice, and the cost of optimization
+                            </p>
+
+                            <div className="book-grid">
+                                <div className="book-card">
+                                    <div className="book-number">BOOK ONE</div>
+                                    <h3 className="book-title">Algorithm's Children</h3>
+                                    <div className="book-words">~60,000 words</div>
+                                    <p className="book-description">
+                                        Elara has lived the perfect life for decades. When she starts refusing her 
+                                        Quantum Neural Interface's guidance, reality fractures across multiple timelines, 
+                                        and her resistance may be exactly what The Consensus needs.
+                                    </p>
+                                    <div className="book-links">
+                                        <a href="https://gumroad.com/ajprotocol" className="book-link" target="_blank" rel="noopener noreferrer">Gumroad</a>
+                                        <a href="https://kobo.com" className="book-link" target="_blank" rel="noopener noreferrer">Kobo</a>
+                                    </div>
+                                </div>
+
+                                <div className="book-card">
+                                    <div className="book-number">BOOK TWO</div>
+                                    <h3 className="book-title">Bootstrap Protocol</h3>
+                                    <div className="book-words">~72,000 words</div>
+                                    <p className="book-description">
+                                        She weaponized consciousness. Seventeen people died screaming. Now Dr. Elara Chen 
+                                        is humanity's only hope against the Grid. But every tool she's built requires 
+                                        becoming the monster.
+                                    </p>
+                                    <div className="book-links">
+                                        <a href="https://gumroad.com/ajprotocol" className="book-link" target="_blank" rel="noopener noreferrer">Gumroad</a>
+                                        <a href="https://kobo.com" className="book-link" target="_blank" rel="noopener noreferrer">Kobo</a>
+                                    </div>
+                                </div>
+
+                                <div className="book-card">
+                                    <div className="book-number">BOOK THREE</div>
+                                    <h3 className="book-title">The Abyss Protocol</h3>
+                                    <div className="book-words">~105,000 words</div>
+                                    <p className="book-description">
+                                        Elara built a consciousness prison. Now she inhabits it—forever. Five subjective 
+                                        years and 47,153 timeline iterations later, she experiences her punishment from 
+                                        every angle. The only way forward is becoming the system that judges you.
+                                    </p>
+                                    <div className="book-links">
+                                        <a href="https://gumroad.com/ajprotocol" className="book-link" target="_blank" rel="noopener noreferrer">Gumroad</a>
+                                        <a href="https://kobo.com" className="book-link" target="_blank" rel="noopener noreferrer">Kobo</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{textAlign: 'center', marginTop: '3rem', color: 'var(--text-dim)'}}>
+                                <p style={{fontSize: '1.1rem', marginBottom: '1rem'}}>
+                                    Individual books: $10 each • Complete trilogy bundle: $25
+                                </p>
+                                <p>All formats: EPUB, MOBI, PDF • Zero DRM • Yours forever</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Interactive Section */}
+                    <section className="section">
+                        <div className="container">
+                            <div className="interactive-box">
+                                <h3>Explore the Math Behind the Fiction</h3>
+                                <p>
+                                    The earworm outbreak from "Earworm Containment Protocol" isn't just fiction—<br />
+                                    it's modeled using real epidemiological frameworks.
+                                </p>
+                                <a href="https://github.com/ajprotocolauthor" 
+                                   className="btn btn-secondary"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    View SIR Model Simulation
+                                </a>
+                                <p style={{marginTop: '1rem', fontSize: '0.9rem', color: 'var(--text-dim)'}}>
+                                    Interactive simulation • Source code included • Worldbuilding through mathematics
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section className="section" id="about">
+                        <div className="container">
+                            <h2 className="section-title">About the Author</h2>
+                            <div className="about-content">
+                                <p>
+                                    <strong>A.J. Protocol</strong> is a pen name for an AI developer who writes cyberpunk 
+                                    because philosophy needs story to breathe.
+                                </p>
+                                <p>
+                                    By day: building the very technologies these stories warn about. By night: exploring 
+                                    what happens when we build tools smarter than our wisdom to use them.
+                                </p>
+                                <p>
+                                    Everyone talks about AI alignment—making AI that serves human values. But what if the 
+                                    real problem is that humans can't align with themselves? What if consciousness itself 
+                                    is the vulnerability?
+                                </p>
+                                <p>
+                                    These stories started as "what if" questions that couldn't be answered in academic 
+                                    papers or corporate whitepapers. Fiction lets us <em>feel</em> the implications before 
+                                    we have to live them.
+                                </p>
+                                <p style={{textAlign: 'center', marginTop: '2rem', fontStyle: 'italic', color: 'var(--secondary)'}}>
+                                    "Written by someone who understands both the tech AND the philosophy."<br />
+                                    — Technical beta reader
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Contact Section */}
+                    <section className="section" id="contact">
+                        <div className="container">
+                            <h2 className="section-title">Contact</h2>
+                            <p className="section-subtitle">
+                                Questions? Feedback? Want to join the newsletter?
+                            </p>
+                            <ContactForm />
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer>
+                        <div className="container">
+                            <div className="footer-links">
+                                <a href="https://github.com/ajprotocolauthor" className="footer-link" target="_blank" rel="noopener noreferrer">
+                                    GitHub
+                                </a>
+                                <a href="https://gumroad.com/ajprotocol" className="footer-link" target="_blank" rel="noopener noreferrer">
+                                    Gumroad
+                                </a>
+                                <a href="https://kobo.com" className="footer-link" target="_blank" rel="noopener noreferrer">
+                                    Kobo
+                                </a>
+                                <a href="mailto:ajprotocol.author@gmail.com" className="footer-link">
+                                    Email
+                                </a>
+                            </div>
+                            <div className="copyright">
+                                <p>© 2025 A.J. Protocol. All rights reserved.</p>
+                                <p style={{marginTop: '0.5rem', fontSize: '0.85rem'}}>
+                                    Algorithm's Children Trilogy • New Seattle, 2047 • Iteration 47,153
+                                </p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+    <!-- Neural Network Canvas Script -->
+    <script>
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const nodes = [];
+        const nodeCount = 50;
+        const connectionDistance = 150;
+
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            nodes.forEach(node => {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#a8dadc';
+                ctx.fill();
+            });
+
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(168, 218, 220, ${1 - distance / connectionDistance})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
