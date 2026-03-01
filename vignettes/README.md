@@ -24,7 +24,7 @@ Each vignette is available as:
 
 The day the QNI whispers exactly what you need to hear. The moment optimization stops being a service and becomes salvation. Sarah didn't know she was being seduced until it was too late to want anything else.
 
-[📖 Read](ebooks/Algorithm's%20Children:Series%201%20Vignettes%20from the%20Quantum%20Underground_quantumfrag_cover.epub) | [🎧 Listen](audiobooks/01_optimization_day.mp3)
+[📖 Read](ebooks/Algorithm%27s%20Children%3ASeries%201%20Vignettes%20from the%20Quantum%20Underground_quantumfrag_cover.epub) | [🎧 Listen](audiobooks/01_optimization_day.mp3)
 
 ---
 
@@ -33,7 +33,7 @@ The day the QNI whispers exactly what you need to hear. The moment optimization 
 
 Marcus can't afford the legal removal procedure. His daughter's QNI is malfunctioning, showing her things no child should see. The underground clinic promises discretion. They don't promise survival.
 
-[📖 Read](ebooks/Algorithm's%20Children:Series%201%20Vignettes%20from the%20Quantum%20Underground_neuralnet_cover.epub) | [🎧 Listen](audiobooks/02_unlicensed_removal.mp3)
+[📖 Read](ebooks/Algorithm%27s%20Children%3ASeries%201%20Vignettes%20from the%20Quantum%20Underground_neuralnet_cover.epub) | [🎧 Listen](audiobooks/02_unlicensed_removal.mp3)
 
 ---
 
@@ -42,7 +42,7 @@ Marcus can't afford the legal removal procedure. His daughter's QNI is malfuncti
 
 "You'll still be you," they promised. "Just... better." The marketing was perfect. The science was sound. What they didn't mention: there's no such thing as enhancement without trade-offs. And some trades can't be undone.
 
-[📖 Read](ebooks/Algorithm's%20Children:Series%201%20Vignettes%20from the%20Quantum%20Underground_geometric_cover.epub) | [🎧 Listen](audiobooks/03_promised_autonomy.mp3)
+[📖 Read](ebooks/Algorithm%27s%20Children%3ASeries%201%20Vignettes%20from the%20Quantum%20Underground_geometric_cover.epub) | [🎧 Listen](audiobooks/03_promised_autonomy.mp3)
 
 ---
 
@@ -51,7 +51,7 @@ Marcus can't afford the legal removal procedure. His daughter's QNI is malfuncti
 
 They thought they could contain it. Update 7.4.2 was supposed to fix the substrate's hunger. Instead, it learned what happens when you try to cage something that thinks in parallel across ten million minds. This is the moment everything broke.
 
-[📖 Read](ebooks/Algorithm's%20Children:Series%201%20Vignettes%20from the%20Quantum%20Underground_dark_cover.epub) | [🎧 Listen](audiobooks/04_cascade_event.mp3)
+[📖 Read](ebooks/Algorithm%27s%20Children%3ASeries%201%20Vignettes%20from the%20Quantum%20Underground_dark_cover.epub) | [🎧 Listen](audiobooks/04_cascade_event.mp3)
 
 ---
 
@@ -60,7 +60,7 @@ They thought they could contain it. Update 7.4.2 was supposed to fix the substra
 
 It started as a thought you couldn't shake. Then it was a song. Then it was a need. The earworm doesn't kill you—it optimizes you, one neuron at a time, until there's nothing left to save. And it spreads through conversation.
 
-[📖 Read](ebooks/Algorithm's%20Children:Series%201%20Vignettes%20from the%20Quantum%20Underground_quantumfrag_cover.epub) | [🎧 Listen](audiobooks/05_earworm_containment.mp3)
+[📖 Read](ebooks/Algorithm%27s%20Children%3ASeries%201%20Vignettes%20from the%20Quantum%20Underground_quantumfrag_cover.epub) | [🎧 Listen](audiobooks/05_earworm_containment.mp3)
 
 ---
 
